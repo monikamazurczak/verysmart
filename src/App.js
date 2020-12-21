@@ -17,10 +17,19 @@ const particlesOptions = {
         enable: true,
         value_area: 800
       }
+    },
+    size: {
+      value: 3,
+      random: true
+    },
+    line_linked: {
+      enable: true,
+      opacity: 0.55
     }
   }
 }
 
+// default route signin, isSignedIn false
 const initialState = {
   input: '',
   imageUrl: '',
@@ -138,11 +147,13 @@ class App extends Component {
         <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
         { route === 'home'
           ? <div>
-              <Logo />
-              <Rank
-                name={this.state.user.name}
-                entries={this.state.user.entries}
-              />
+              <div className="header mb4">
+                <Logo />
+                <Rank
+                  name={this.state.user.name}
+                  entries={this.state.user.entries}
+                />
+              </div>
               <ImageLinkForm
                 onInputChange={this.onInputChange}
                 onButtonSubmit={this.onButtonSubmit}
