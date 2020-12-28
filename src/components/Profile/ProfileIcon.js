@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import './profile.css';
+import './Profile.css';
 
-const ProfileIcon = ({ onRouteChange }) => {
+const ProfileIcon = ({ onRouteChange, toggleModal }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggle = () => {
@@ -22,7 +22,7 @@ const ProfileIcon = ({ onRouteChange }) => {
         </DropdownToggle>
         <DropdownMenu right
           className="b--transparent shadow-5">
-          <DropdownItem>View Profile</DropdownItem>
+          <DropdownItem onClick={toggleModal}>View Profile</DropdownItem>
           <DropdownItem onClick={() => onRouteChange('signout')}>Sign Out</DropdownItem>
         </DropdownMenu>
       </Dropdown>
