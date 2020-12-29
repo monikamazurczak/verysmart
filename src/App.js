@@ -31,20 +31,22 @@ const particlesOptions = {
   }
 }
 
-// default route signin, isSignedIn false
+// default route signin, isSignedIn false, isModalOpen false
 const initialState = {
   input: '',
   imageUrl: '',
   boxes: [],
   route: 'signin',
   isSignedIn: false,
-  isModalOpen: true,
+  isModalOpen: false,
   user: {
     id: '',
     name: '',
     email: '',
     entries: 0,
-    joined: ''
+    joined: '',
+    age: 0,
+    hobby: ''
   },
   status: ''
 }
@@ -60,7 +62,9 @@ class App extends Component {
       name: data.name,
       email: data.email,
       entries: data.entries,
-      joined: data.joined
+      joined: data.joined,
+      age: data.age,
+      hobby: data.hobby
     }})
   }
 
@@ -147,7 +151,7 @@ class App extends Component {
   }
 
   render() {
-    const { input, isSignedIn, imageUrl, route, boxes, status, isModalOpen } = this.state;
+    const { input, isSignedIn, imageUrl, route, boxes, status, isModalOpen, user } = this.state;
     return (
       <div className="App">
          <Particles className='particles'
@@ -156,7 +160,7 @@ class App extends Component {
         <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} toggleModal={this.toggleModal} />
         { isModalOpen && 
           <Modal>
-            <Profile toggleModal={this.toggleModal} />
+            <Profile toggleModal={this.toggleModal} loadUser={this.loadUser} user={user} />
           </Modal>
         }
         { route === 'home'

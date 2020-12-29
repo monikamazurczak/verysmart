@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import ProfileImage from './ProfileImage';
 import './Profile.css';
 
 const ProfileIcon = ({ onRouteChange, toggleModal }) => {
@@ -16,9 +17,7 @@ const ProfileIcon = ({ onRouteChange, toggleModal }) => {
           tag="span"
           data-toggle="dropdown"
           aria-expanded={dropdownOpen}>
-          <img
-            src="http://tachyons.io/img/logo.jpg"
-            className="br-100 ba h3 w3 dib" alt="avatar" />
+          <ProfileImage />
         </DropdownToggle>
         <DropdownMenu right
           className="b--transparent shadow-5">
