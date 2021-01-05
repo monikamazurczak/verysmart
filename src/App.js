@@ -56,6 +56,26 @@ class App extends Component {
     this.state = initialState;
   }
 
+  componentDidMount() {
+    const token = window.sessionStorage.getItem('token');
+    if (token) {
+      fetch(`${process.env.REACT_APP_SERVER}/signin`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.userId) {
+            this.getUserProfile(data.userId)
+          }
+        })
+        .catch(err => console.log(err))
+    }
+  }
+
   loadUser = (data) => {
     this.setState({user: {
       id: data.id,
@@ -66,6 +86,25 @@ class App extends Component {
       age: data.age,
       hobby: data.hobby
     }})
+  }
+
+  getUserProfile = (id) => {
+    const token = window.sessionStorage.getItem('token');
+    fetch(`${process.env.REACT_APP_SERVER}/profile/${id}`, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => response.json())
+    .then(user => {
+      if (user && user.email) {
+        this.loadUser(user);
+        this.onRouteChange('home');
+      }
+    })
+    .catch(err => console.log(err))
   }
 
   calculateFaceLocations = (data) => {
@@ -182,7 +221,7 @@ class App extends Component {
             </div>
           : (
              route === 'signin'
-             ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+             ? <Signin getUserProfile={this.getUserProfile} onRouteChange={this.onRouteChange} />
              : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
             )
         }
