@@ -139,6 +139,7 @@ class App extends Component {
   }
 
   onButtonSubmit = () => {
+    const token = window.sessionStorage.getItem('token');
     this.setState({
       imageUrl: this.state.input,
       boxes: [],
@@ -146,7 +147,10 @@ class App extends Component {
     });
     fetch(`${process.env.REACT_APP_SERVER}/imageurl`, {
       method: 'post',
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify({
         input: this.state.input
       })
@@ -156,7 +160,10 @@ class App extends Component {
       if (response.status !== undefined) {
         fetch(`${process.env.REACT_APP_SERVER}/image`, {
           method: 'put',
-          headers: {'Content-Type': 'application/json'},
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify({
             id: this.state.user.id
           })
@@ -176,6 +183,7 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if (route === 'signout') {
+      window.sessionStorage.removeItem('token');
       return this.setState(initialState)
     } else if (route === 'home') {
       this.setState({isSignedIn: true})

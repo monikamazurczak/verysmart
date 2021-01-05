@@ -22,14 +22,20 @@ class Profile extends React.Component {
 
   handleProfileUpdate = (data) => {
     const { user, toggleModal, loadUser } = this.props
+    const token = window.sessionStorage.getItem('token');
     fetch(`${process.env.REACT_APP_SERVER}/profile/${user.id}`, {
       method: 'post',
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify({ formInput: data })
     })
     .then(res => {
-      toggleModal();
-      loadUser({ ...user, ...data });
+      if (res.status === 200 || res.status === 304) {
+        toggleModal();
+        loadUser({ ...user, ...data });
+      }
     })
     .catch(err => console.log(err));
   }
